@@ -35,9 +35,13 @@ class Communicator:
     def subscribe(self, timetoken = None):
         if timetoken is None:
             timetoken = self.timetoken
-        result = json.loads(urllib.request.urlopen(self.makeSubscribe(timetoken)).read())
-        self.timetoken = result[1]
-        return result
+        try:
+            result = json.loads(urllib.request.urlopen(self.makeSubscribe(timetoken), timeout=1).read())
+            self.timetoken = result[1]
+            return result
+        except Exception as e:
+            return None
+
 
 if __name__ == "__main__":
     comm = Communicator()
