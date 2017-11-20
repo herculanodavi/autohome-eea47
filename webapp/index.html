@@ -28,7 +28,20 @@
 			    }
 			</style>
 
-			<div class="button">Toggle door</div>
+			<section id="banner">
+						<div class="inner">
+							<h2>AutoHome EEA-47</h2>
+							<p>Palmeiras não tem mundial<br/>
+							</p>
+						</div>
+						<a href="#one" class="more scrolly">Learn More</a>
+            </section>
+
+			<div class="button" id='open'>Open door</div>
+
+			<br>
+
+			<div class="button" id='close'>Close door</div>
 
 			<br>
 			<!-- <div class="button">Read light sensor</div> -->
@@ -112,10 +125,18 @@
 			    // }
 
 				$('.button').click(function () {
-			        var res = $.ajax({type: 'GET', url: 'http://pubsub.pubnub.com/publish/pub-c-71ef04a5-cf0e-48a0-9566-05d391a1794f/sub-c-d0ba7b56-c25b-11e7-83f0-6e80f1f24680/0/act_get/0/2'}).done(function(){
-						console.log('GET request success.')
-					});
-			        console.log(res.readyState)
+					console.log('button id is ' + $(this).attr('id'))
+					var id = $(this).attr('id');
+					if(id == 'close'){
+						var res = $.ajax({type: 'GET', url: 'http://pubsub.pubnub.com/publish/pub-c-71ef04a5-cf0e-48a0-9566-05d391a1794f/sub-c-d0ba7b56-c25b-11e7-83f0-6e80f1f24680/0/act_get/0/90'}).done(function(){
+							console.log('Sent 90')
+						});
+					}
+					if(id == 'open'){
+						var res = $.ajax({type: 'GET', url: 'http://pubsub.pubnub.com/publish/pub-c-71ef04a5-cf0e-48a0-9566-05d391a1794f/sub-c-d0ba7b56-c25b-11e7-83f0-6e80f1f24680/0/act_get/0/0'}).done(function(){
+							console.log('Sent 0')
+						});
+					}
 			    });
 
 			</script>
