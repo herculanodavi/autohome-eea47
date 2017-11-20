@@ -17,7 +17,7 @@ class Communicator:
     def publish(self, message, channel = 'eea'):
         # set message to url format and publish
         message = urllib.parse.quote_plus('\"' + message + '\"')
-        return json.loads(urllib.request.urlopen(self.makePublish(message, channel)).read())
+        return json.loads(urllib.request.urlopen(self.makePublish(message, channel)).read().decode("utf-8"))
 
     def getToken(self, channel):
         try:
