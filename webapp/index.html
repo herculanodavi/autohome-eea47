@@ -1,0 +1,124 @@
+<!DOCTYPE HTML>
+<!--
+	Spectral by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html>
+	<head>
+		<title>EEA-47 Home Automation Project</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<!--[if lte IE 8]><script src="assets/js/ie/html5shiv.js"></script><![endif]-->
+		<link rel="stylesheet" href="assets/css/main.css" />
+		<!--[if lte IE 8]><link rel="stylesheet" href="assets/css/ie8.css" /><![endif]-->
+		<!--[if lte IE 9]><link rel="stylesheet" href="assets/css/ie9.css" /><![endif]-->
+	</head>
+	<body class="landing">
+			<style>
+			    .button {
+			        display: table-cell;
+			        width: 200px;
+			        height: 75px;
+			        color: #fff;
+			        background: #000;
+			        text-align: center;
+			        vertical-align: middle;
+			        cursor: pointer;
+			    }
+			</style>
+
+			<div class="button">Toggle door</div>
+
+			<br>
+			<!-- <div class="button">Read light sensor</div> -->
+
+			<input type='button' class='result' value='Light sensor reading: ' id='sensor'>
+			<br>
+			<br>
+			<input type='button' class='result' value='Door reading: ' id='actuator'>
+
+
+		<!-- Scripts -->
+			<script src="assets/js/jquery.min.js"></script>
+			<script src="assets/js/jquery.scrollex.min.js"></script>
+			<script src="assets/js/jquery.scrolly.min.js"></script>
+			<script src="assets/js/skel.min.js"></script>
+			<script src="assets/js/util.js"></script>
+			<!--[if lte IE 8]><script src="assets/js/ie/respond.min.js"></script><![endif]-->
+			<script src="assets/js/main.js"></script>
+
+			<script type="text/javascript">
+				var timetoken_sensor = 0
+				var timetoken_actuator = 0
+
+			    var init_sensor = $.ajax({
+			        type: 'GET',
+			        url: 'http://pubsub.pubnub.com/subscribe/sub-c-d0ba7b56-c25b-11e7-83f0-6e80f1f24680/sensor/0/'}).done(function(){
+			            timetoken = eval(init_sensor.responseText)[0]
+			            console.log('initial timetoken is ' + String(timetoken))
+			            setInterval(updateSensorReading, 1000)
+			            setInterval(updateActuatorReading, 1000)
+			        })
+
+			    function updateSensorReading(){
+			        //self.server + '/subscribe' + '/' + self.sub + '/' + self.channel + '/0/' + str(self.timetoken)
+			        var res = $.ajax({
+			            type: 'GET',
+			            url: 'http://pubsub.pubnub.com/subscribe/sub-c-d0ba7b56-c25b-11e7-83f0-6e80f1f24680/sen_res/0/' + String(timetoken_sensor),
+			            timeout: 500}).done(function() {
+			                res = eval(res.responseText)
+
+			                console.log(res[0].length > 0)
+			                timetoken_sensor = res[1]
+			                if(res[0].length > 0){
+			                    res = res[0]
+			                    $("#sensor").prop('value', 'Light sensor reading: ' + String(res[0]));
+			                }
+			                console.log('New sensor timetoken is ' + String(timetoken_sensor))
+			            });
+			    }
+
+			    // function commandSensorReading(){
+			    // 	var res = $.ajax({
+			    // 		type: 'GET',
+			    // 		url: 'http://pubsub.pubnub.com/publish/pub-c-71ef04a5-cf0e-48a0-9566-05d391a1794f/sub-c-d0ba7b56-c25b-11e7-83f0-6e80f1f24680/0/sensor/0/12'});
+			    // 	console.log('I command!')
+			    // }
+
+			    function updateActuatorReading(){
+			        //self.server + '/subscribe' + '/' + self.sub + '/' + self.channel + '/0/' + str(self.timetoken)
+			        var res = $.ajax({
+			            type: 'GET',
+			            url: 'http://pubsub.pubnub.com/subscribe/sub-c-d0ba7b56-c25b-11e7-83f0-6e80f1f24680/act_res/0/' + String(timetoken_actuator),
+			            timeout: 500}).done(function() {
+			                res = eval(res.responseText)
+
+			                console.log(res[0].length > 0)
+			                timetoken_actuator = res[1]
+			                if(res[0].length > 0){
+			                    res = res[0]
+			                    $("#actuator").prop('value', 'Actuator reading: ' + String(res[0]));
+			                }
+			                console.log('New actuator timetoken is ' + String(timetoken_actuator))
+			            });
+			    }
+
+			    // function commandReading(){
+			    // 	var res = $.ajax({
+			    // 		type: 'GET',
+			    // 		url: 'http://pubsub.pubnub.com/publish/pub-c-71ef04a5-cf0e-48a0-9566-05d391a1794f/sub-c-d0ba7b56-c25b-11e7-83f0-6e80f1f24680/0/sensor/0/12'});
+			    // 	console.log('I command!')
+			    // }
+
+				$('.button').click(function () {
+			        var res = $.ajax({type: 'GET', url: 'http://pubsub.pubnub.com/publish/pub-c-71ef04a5-cf0e-48a0-9566-05d391a1794f/sub-c-d0ba7b56-c25b-11e7-83f0-6e80f1f24680/0/act_get/0/2'}).done(function(){
+						console.log('GET request success.')
+					});
+			        console.log(res.readyState)
+			    });
+
+			</script>
+
+	</body>
+</html>
