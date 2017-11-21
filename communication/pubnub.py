@@ -1,7 +1,7 @@
 import urllib.request
 import json
 
-class Communicator:
+class Pubnub:
     pub = 'pub-c-71ef04a5-cf0e-48a0-9566-05d391a1794f'
     sub = 'sub-c-d0ba7b56-c25b-11e7-83f0-6e80f1f24680'
     server = 'http://pubsub.pubnub.com'
@@ -45,7 +45,7 @@ class Communicator:
             return None
 
 if __name__ == "__main__":
-    comm = Communicator()
+    comm = Pubnub()
     comm.subscribe()
     comm.subscribe('a')
     print(comm.subscribe())
