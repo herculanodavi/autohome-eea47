@@ -4,8 +4,6 @@ import spidev
 import time
 
 class Radio:
-    # ABCDABCD71LL
-    # A8A8E1F0C6
     sensorWritingPipe = [0xAB, 0xCD, 0xAB, 0xCD, 0x71]
     actuatorWritingPipe = [0xA8, 0xA8, 0xE1, 0xF0, 0xC6]
     readingPipe = [0xF0, 0xF0, 0xF0, 0xF0, 0xE1]
@@ -56,7 +54,7 @@ class Radio:
                 return None
 
         receivedMessage = []
-        self.radio.read(receivedMessage, radio.getDynamicPayloadSize())
+        self.radio.read(receivedMessage, self.radio.getDynamicPayloadSize())
 
         string = ""
         for n in receivedMessage:

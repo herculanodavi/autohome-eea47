@@ -3,3 +3,4 @@
 *.py.save
 */__pycache__/
 /pubnub/__pycache__/
+*.xml
