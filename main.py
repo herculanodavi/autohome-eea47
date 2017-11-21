@@ -4,7 +4,11 @@ import time
 
 radio = Radio()
 
+c = Pubnub()
+
 while(1):
     time.sleep(3)
     if radio.sendSensorRequest("0") != 0:
-        print(radio.getSensorData(radio))
+        message = radio.getSensorData(radio)
+        print(message)
+    c.publish(message, 'sen_res')
