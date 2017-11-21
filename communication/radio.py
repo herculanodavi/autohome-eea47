@@ -25,7 +25,7 @@ class Radio:
         self.radio.enableAckPayload()
 
         self.radio.openWritingPipe(self.sensorWritingPipe)
-        self.radio.openReadingPipe(1, self.readingPipe)
+        self.radio.openReadingPipe(1, self.sensorReadingPipe)
         self.radio.printDetails()
 
     # Send message through pipe
@@ -43,14 +43,14 @@ class Radio:
 
     # Read sensor result after request
     def receive(self, pipe):
-        self.radio.openReadingPipe(1, pipe)
+        #self.radio.openReadingPipe(1, pipe)
         self.radio.startListening()
-        time.sleep(0.5)
+        time.sleep(0.2)
         start = time.time()
 
         while not self.radio.available(0):
             time.sleep(1/100)
-            if time.time() - start >= 3:
+            if time.time() - start >= 1:
                 print("getSensorData timed out.")
                 return None
 
@@ -67,11 +67,11 @@ class Radio:
 
     # Request sensor reading
     def getSensorData(self):
-        return self.send(self.sensorWritingPipe)
+        return self.receive(self.sensorWritingPipe)
 
     # Request actuator reading
     def getActuatorData(self):
-        return self.send(self.actuatorWritingPipe)
+        return self.receive(self.actuatorWritingPipe)
 
 #---------------------------#
 #      Module Testing       #

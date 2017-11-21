@@ -6,10 +6,11 @@ radio = Radio()
 
 c = Pubnub()
 while(1):
-    time.sleep(2)
     # reading sensor data and publishing it to webapp
     print('Sending sensor request...')
-    if radio.sendSensorRequest("0") != 0:
+    req = radio.sendSensorRequest('0')
+    print('Message protocol returned ' + str(req))
+    if req != 0:
         message = radio.getSensorData()
         if message is not None:
             print('Sending ' + message + ' to pubnub')
@@ -20,7 +21,9 @@ while(1):
 
     # reading actuator data and publishing it to webapp
     print('Sending actuator request...')
-    if radio.sendActuatorRequest("0") != 0:
+    req = radio.sendActuatorRequest('12')
+    print('Message protocol returned ' + str(req))
+    if radio.sendActuatorRequest("12") != 0:
         message = radio.getActuatorData()
         if message is not None:
             print('Sending ' + message + ' to pubnub')
@@ -33,8 +36,9 @@ while(1):
     message = c.subscribe('act_get')
     if message is not None:
         if len(message[0]) > 0:
-            print('Sending actuator request...')
-            print(radio.sendActuatorRequest('0' + str(message[0][0])))
+            print('Sending actuator action request...')
+            print('Message is ' + str(message))
+            print('Request returned ' + str(radio.sendActuatorRequest('1' + str(message[0][0]))))
 
     print('--------------------')
     print(' ')
