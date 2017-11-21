@@ -50,7 +50,6 @@ class Radio:
             time.sleep(1/100)
             if time.time() - start >= 3:
                 print("getSensorData timed out.")
-                self.radio.stopListening()
                 return None
 
         receivedMessage = []
