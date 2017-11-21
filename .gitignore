@@ -1,0 +1,5 @@
+*.pyc
+*.py.swp
+*.py.save
+*/__pycache__/
+/pubnub/__pycache__/

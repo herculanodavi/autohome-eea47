@@ -79,7 +79,7 @@
 			        var res = $.ajax({
 			            type: 'GET',
 			            url: 'http://pubsub.pubnub.com/subscribe/sub-c-d0ba7b56-c25b-11e7-83f0-6e80f1f24680/sen_res/0/' + String(timetoken_sensor),
-			            timeout: 500}).done(function() {
+			            timeout: 995}).done(function() {
 			                res = eval(res.responseText)
 
 			                console.log(res[0].length > 0)
@@ -104,7 +104,7 @@
 			        var res = $.ajax({
 			            type: 'GET',
 			            url: 'http://pubsub.pubnub.com/subscribe/sub-c-d0ba7b56-c25b-11e7-83f0-6e80f1f24680/act_res/0/' + String(timetoken_actuator),
-			            timeout: 500}).done(function() {
+			            timeout: 995}).done(function() {
 			                res = eval(res.responseText)
 
 			                console.log(res[0].length > 0)

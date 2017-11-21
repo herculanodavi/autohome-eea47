@@ -46,8 +46,7 @@ class Communicator:
 
 if __name__ == "__main__":
     comm = Communicator()
-    a = comm.subscribe()
-    b = comm.subscribe()
-    c = comm.subscribe('eca')
-    c = comm.subscribe('eca')
+    comm.subscribe()
+    comm.subscribe('a')
+    print(comm.subscribe())
     print(comm.timetoken)
