@@ -6,9 +6,7 @@ from pubnub.communicator import Communicator
 
 def sendSensorRequest(string, radio, sensorWritingPipe):
     radio.openWritingPipe(sensorWritingPipe)
-    result = radio.write(string)
-    if result == 0:
-        print("Failed sending data to sensor.")
+    radio.write(string)
 
 def getSensorData(radio):
     radio.startListening()
@@ -36,8 +34,9 @@ c = Communicator()
 
 GPIO.setmode(GPIO.BCM)
  
-pipes = [[0x00, 0x00, 0x00, 0x00, 0x00], [0x00, 0x00, 0x00, 0x00, 0x01], [0x00, 0x00, 0x00, 0x00, 0x02]]
-
+pipes = [[0xAB, 0xCD, 0xAB, 0xCD, 0x71], [0xA8, 0xA8, 0xE1, 0xF0, 0xC6], [0xF0, 0xF0, 0xF0, 0xF0, 0xE1]]
+# ABCDABCD71LL
+# A8A8E1F0C6
 sensorWritingPipe = pipes[0]
 
 actuatorWritingPipe = pipes[1]
@@ -64,9 +63,9 @@ radio.printDetails()
 
 
 while(1):
-    start = time.time()
+    time.sleep(3)
     sendSensorRequest("0", radio, sensorWritingPipe)
-    print(getSensorData(radio))
+    # print(getSensorData(radio))
 
 
 
