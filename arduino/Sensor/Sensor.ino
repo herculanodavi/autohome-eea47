@@ -7,10 +7,11 @@
 // CE, CSN pins
 RF24 radio(7, 8);
 
-
-char receivedMessage[32] = {0};
-const uint64_t readingPipe = (0xABCDABCD71LL);
+char receivedMessage[] = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
+//const uint64_t readingPipe = (0xABCDABCD71LL);
 const uint64_t writingPipe = (0xF0F0F0F0E1LL);
+const uint64_t readingPipe = (0xA8A8E1F0C6LL);
+
 
 void initRadio(){
   radio.begin();
@@ -30,7 +31,6 @@ void initRadio(){
 }
 
 void getData(){
-  radio.setRxMode();
   radio.startListening();
   delay(250);
   int i = 1;
@@ -46,6 +46,7 @@ void getData(){
   Serial.print("Received message: ");
   Serial.println(receivedMessage);
   radio.stopListening();
+  delay(10);
 }
 /*
 int sendData(char string[]){
@@ -61,14 +62,19 @@ void setup(void){
   Serial.begin(9600);
   initRadio();
 }
+
+const char text[] = "1234";
+
+int analogSense() {
+  return analogRead(1);
+}
  
 void loop(void){
   getData();
   int b;
-  char text[] = "1234";
-  //String text = "1234";
+  //String text = "12345678901234567890123456789012";
+  delay(200);
   if(receivedMessage[0] == '0'){
-    radio.setTxMode();
     b = radio.write(text, sizeof(text));
     Serial.println(b);
   }

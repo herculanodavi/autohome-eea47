@@ -6,7 +6,8 @@ import time
 class Radio:
     sensorWritingPipe = [0xAB, 0xCD, 0xAB, 0xCD, 0x71]
     actuatorWritingPipe = [0xA8, 0xA8, 0xE1, 0xF0, 0xC6]
-    readingPipe = [0xF0, 0xF0, 0xF0, 0xF0, 0xE1]
+    sensorReadingPipe = [0xF0, 0xF0, 0xF0, 0xF0, 0xE1]
+    actuatorReadingPipe = [0xE1, 0xE1, 0xE1, 0xE1, 0xF0]
 
     def __init__(self):
         GPIO.setmode(GPIO.BCM)
@@ -41,7 +42,8 @@ class Radio:
         return self.send(self.actuatorWritingPipe, message)
 
     # Read sensor result after request
-    def getSensorData(self):
+    def receive(self, pipe):
+        self.radio.openReadingPipe(1, pipe)
         self.radio.startListening()
         time.sleep(0.5)
         start = time.time()
@@ -63,10 +65,18 @@ class Radio:
         self.radio.stopListening()
         return string
 
+    # Request sensor reading
+    def getSensorData(self):
+        return self.send(self.sensorWritingPipe)
+
+    # Request actuator reading
+    def getActuatorData(self):
+        return self.send(self.actuatorWritingPipe)
+
 #---------------------------#
 #      Module Testing       #
 #---------------------------#
 if __name__ == '__main__':
     r = Radio()
     r.sendSensorRequest('0')
-    print(getSensorData())
+    print(r.getSensorData())

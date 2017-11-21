@@ -18,6 +18,17 @@ while(1):
     print('--------------------')
     print(' ')
 
+    # reading actuator data and publishing it to webapp
+    print('Sending actuator request...')
+    if radio.sendActuatorRequest("0") != 0:
+        message = radio.getActuatorData()
+        if message is not None:
+            print('Sending ' + message + ' to pubnub')
+            c.publish(message, 'act_res')
+
+    print('--------------------')
+    print(' ')
+
     # reading pubnub to change door status
     message = c.subscribe('act_get')
     if message is not None:
