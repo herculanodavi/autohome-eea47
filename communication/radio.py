@@ -29,10 +29,18 @@ class Radio:
         self.radio.openReadingPipe(1, pipes[1])
         self.radio.printDetails()
 
+    # Send message through pipe
+    def send(pipe, message):
+        self.radio.openWritingPipe(pipe)
+        return self.radio.write(message)
+
     # Request sensor reading
-    def sendSensorRequest(string):
-        self.radio.openWritingPipe(self.sensorWritingPipe)
-        return self.radio.write(string)
+    def sendSensorRequest(message):
+        return self.send(self.sensorWritingPipe, message)
+
+    # Request actuator reading
+    def sendActuatorRequest(message):
+        return self.send(self.actuatorWritingPipe, message)
 
     # Read sensor result after request
     def getSensorData():
@@ -58,7 +66,10 @@ class Radio:
         self.radio.stopListening()
         return string
 
-    if __name__ == '__main__':
-        r = Radio()
-        r.sendSensorRequest('0')
-        print(getSensorData())
+#---------------------------#
+#      Module Testing       #
+#---------------------------#
+if __name__ == '__main__':
+    r = Radio()
+    r.sendSensorRequest('0')
+    print(getSensorData())
