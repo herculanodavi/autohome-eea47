@@ -57,3 +57,8 @@ class Radio:
 
         self.radio.stopListening()
         return string
+
+    if __name__ == '__main__':
+        r = Radio()
+        r.sendSensorRequest('0')
+        print(getSensorData())
