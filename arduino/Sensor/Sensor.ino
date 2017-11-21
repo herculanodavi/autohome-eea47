@@ -8,8 +8,10 @@
 RF24 radio(7, 8);
 
 char receivedMessage[] = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
-const uint64_t readingPipe = (0xABCDABCD71LL);
+//const uint64_t readingPipe = (0xABCDABCD71LL);
 const uint64_t writingPipe = (0xF0F0F0F0E1LL);
+const uint64_t readingPipe = (0xA8A8E1F0C6LL);
+
 
 void initRadio(){
   radio.begin();
@@ -61,12 +63,17 @@ void setup(void){
   initRadio();
 }
 
-const char* text = "1234567890123456789012345678901";
+const char text[] = "1234";
+
+int analogSense() {
+  return analogRead(1);
+}
  
 void loop(void){
   getData();
   int b;
   //String text = "12345678901234567890123456789012";
+  delay(200);
   if(receivedMessage[0] == '0'){
     b = radio.write(text, sizeof(text));
     Serial.println(b);
