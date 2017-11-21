@@ -1,5 +1,5 @@
 import RPi.GPIO as GPIO
-from lib_nrf24 import NRF24
+from .lib_nrf24 import NRF24
 import spidev
 import time
 
@@ -25,25 +25,25 @@ class Radio:
         self.radio.enableDynamicPayloads()
         self.radio.enableAckPayload()
 
-        self.radio.openWritingPipe(pipes[0])
-        self.radio.openReadingPipe(1, pipes[1])
+        self.radio.openWritingPipe(self.sensorWritingPipe)
+        self.radio.openReadingPipe(1, self.actuatorWritingPipe)
         self.radio.printDetails()
 
     # Send message through pipe
-    def send(pipe, message):
+    def send(self, pipe, message):
         self.radio.openWritingPipe(pipe)
         return self.radio.write(message)
 
     # Request sensor reading
-    def sendSensorRequest(message):
+    def sendSensorRequest(self, message):
         return self.send(self.sensorWritingPipe, message)
 
     # Request actuator reading
-    def sendActuatorRequest(message):
+    def sendActuatorRequest(self, message):
         return self.send(self.actuatorWritingPipe, message)
 
     # Read sensor result after request
-    def getSensorData():
+    def getSensorData(self):
         self.radio.startListening()
         time.sleep(0.5)
         start = time.time()
