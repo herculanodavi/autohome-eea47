@@ -24,7 +24,7 @@ class Radio:
         self.radio.enableAckPayload()
 
         self.radio.openWritingPipe(self.sensorWritingPipe)
-        self.radio.openReadingPipe(1, self.actuatorWritingPipe)
+        self.radio.openReadingPipe(1, self.readingPipe)
         self.radio.printDetails()
 
     # Send message through pipe

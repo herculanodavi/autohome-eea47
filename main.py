@@ -7,8 +7,13 @@ radio = Radio()
 c = Pubnub()
 
 while(1):
-    time.sleep(3)
+    time.sleep(2)
+    print('Sending sensor request...')
     if radio.sendSensorRequest("0") != 0:
-        message = radio.getSensorData(radio)
-        print(message)
-    c.publish(message, 'sen_res')
+        message = radio.getSensorData()
+        if message is not None:
+            print('Sending ' + message + ' to pubnub')
+            c.publish(message, 'sen_res')
+
+    print('--------------------')
+    print(' ')
