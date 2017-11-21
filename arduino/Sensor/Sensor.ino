@@ -71,3 +71,13 @@ void setup(void){
 }
 
 const char text[] = "SENSE";
+
+void loop(void){
+  getData();
+  int b;
+  if(receivedMessage[0] == '0'){
+    b = radio.write(text, sizeof(text));
+    Serial.println(b);
+  }
+}
+
